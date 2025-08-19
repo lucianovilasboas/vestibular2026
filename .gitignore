@@ -17,7 +17,7 @@ py_env/
 
 # Aceite apenas o arquivo all_data.xlsx da pasta dados/processed e ignore todos os outros arquivos 
 dados/processed/*
-!dados/processed/all_data.xlsx
+!dados/processed/all_data.csv
 
 # Ignore a pasta input e a pasta backup
 input/

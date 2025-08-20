@@ -171,7 +171,6 @@ def amostrar_dois_por_dia(df):
 
 
 
-
 @st.cache_data(ttl=3600) # Força a atualização do cache a cada 1 hora (3600 segundos)
 def load_data():
     df_all = pd.read_csv("dados/processed/all_data.csv")
@@ -179,9 +178,5 @@ def load_data():
     df_all['Data'] = pd.to_datetime(df_all['Timestamp'])
     # remover Timestamp
     df_all.drop(columns=['Timestamp'], inplace=True)
-
-    # colunas = ["Unidade","Curso","Modalidade","LB_PPI","LB_Q","LB_PCD","LB_EP",
-    #           "LI_PPI","LI_Q","LI_PCD","LI_EP",
-    #           "AC","Insc.","Data"]
 
     return df_all

@@ -19,8 +19,8 @@ if __name__ == "__main__":
         # Adiciona todos os arquivos modificados e não rastreados
         # repo.git.add(all=True)
 
-        # command: git add ./dados/processed/all_data.xlsx 
-        repo.git.add(["./dados/processed/all_data.xlsx"])
+        # command: git add ./dados/processed/all_data.csv
+        repo.git.add(["./dados/processed/all_data.csv"])
 
         # Faz o commit
         # command: git commit -m "Data update using git 
@@ -29,8 +29,8 @@ if __name__ == "__main__":
         # Opcional: Push para o repositório remoto
         origin = repo.remote(name='origin')
 
-        # command: git push origin master
-        origin.push()
+        # command: git push origin main
+        origin.push("main")
 
         # Obtém os arquivos que foram comitados
         comitados = list(commit.stats.files.keys())

@@ -18,6 +18,7 @@ st.markdown(html_code, unsafe_allow_html=True)
 
 col1 = st.sidebar.container()
 col2 = st.sidebar.container()
+col3 = st.sidebar.container()
 
 with col1:
     unidades = df_all['Unidade'].unique()
@@ -40,30 +41,34 @@ else:
     df_filter_mapa = df_unidade[df_unidade['Modalidade'] == modalidade]
 
 
+with col3:
+    cursos = ["Todos"] + list(df_filter['Curso'].unique())
+    curso = st.selectbox('Selecione o curso:', cursos, key='curso_select')
 
-st.subheader('📈 Gráfico de inscrições acumuladas')
+
+if curso != "Todos":
+    df_filter = df_filter[df_filter['Curso'] == curso]
+    df_filter_mapa = df_filter_mapa[df_filter_mapa['Curso'] == curso]
+
+
+
+st.subheader('📈 Evolução das Inscrições')
+st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso}")
 container = st.container()
 with container:
     # Colunas que queremos acompanhar
-    colunas = ["LB_PPI","LB_Q","LB_PCD","LB_EP",
-            "LI_PPI","LI_Q","LI_PCD","LI_EP",
-            "AC","Insc."]
-
+    colunas = ["Insc.", "LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC"]
     # Agrupar por data e somar
     df_grouped = df_filter_mapa.groupby("Data")[colunas].sum().reset_index()
-
     # Calcular acumulado
     df_cumsum = df_grouped.copy()
     # df_cumsum[colunas] = df_cumsum[colunas].cumsum()
-
     # Transformar em formato longo (para Plotly)
     df_melt = df_cumsum.melt(id_vars="Data", value_vars=colunas,
-                            var_name="Categoria", value_name="Inscrições")
-
+                            var_name="Cotas", value_name="Inscrições")
     # Criar gráfico com Plotly Express
-    fig = px.line(df_melt, x="Data", y="Inscrições", color="Categoria",
-                markers=True, title="Evolução Acumulada das Inscrições")
-
+    fig = px.line(df_melt, x="Data", y="Inscrições", color="Cotas",
+                markers=True, )
     # Mostrar no Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
@@ -71,10 +76,6 @@ with container:
 
 
 st.subheader('📊 Resumo dos dados')
-# st.write(f"Total de inscritos: {df_filter.iloc[-1]['Total']}")
-# colunas = ["Unidade","Curso","Modalidade","LB_PPI","LB_Q","LB_PCD","LB_EP",
-#               "LI_PPI","LI_Q","LI_PCD","LI_EP",
-#               "AC","Insc.","Data"]
 
-colunas = ["Unidade","Curso","Modalidade","Vagas","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC","Insc.","1ª Op.","2ª Op.","3ª Op.","Insc. / Vagas","Insc. Válidas.","Insc. Vál. / Vagas","Data"]
+colunas = ["Unidade","Curso","Modalidade","Vagas","Insc.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC","1ª Op.","2ª Op.","3ª Op.","Insc. / Vagas","Insc. Válidas.","Insc. Vál. / Vagas","Data"]
 st.dataframe(df_filter[colunas].sort_values(by='Insc.', ascending=False).reset_index(drop=True), use_container_width=True)

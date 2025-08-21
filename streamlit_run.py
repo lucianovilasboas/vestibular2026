@@ -86,3 +86,8 @@ st.subheader('📊 Resumo dos dados')
 colunas = ["Unidade","Curso","Modalidade","Vagas","Insc.","1ª Op.","2ª Op.","3ª Op.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC","Insc. / Vagas","Insc. Válidas.","Insc. Vál. / Vagas","Data"]
 st.dataframe(df_filter[colunas].sort_values(by='Insc.', ascending=False).reset_index(drop=True), use_container_width=True)
 
+
+
+
+st.markdown("""___""")
+st.caption("Desenvolvido com ❤️ por [Luciano Espiridiao](luciano.espiridiao@ifmg.edu.br). 2025 - Todos os direitos reservados.")

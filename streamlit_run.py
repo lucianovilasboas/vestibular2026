@@ -56,8 +56,9 @@ if curso != "Todos":
 
 
 
+
 st.subheader('📈 Evolução das Inscrições')
-st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Total de inscrições (1ª Op.):** {df_filter['1ª Op.'].sum()}")
+st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Vagas:** {df_filter['Vagas'].sum()} | **Total de inscrições (1ª Op.):** {df_filter['1ª Op.'].sum()}")
 # st.warning(f"ATENÇÃO: A coluna Insc. é a soma das colunas 1ª Op., 2ª Op. e 3ª Op.")
 container = st.container()
 with container:
@@ -88,9 +89,7 @@ with container:
     # Mostrar no Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
-
-
-
+# insira um emiji apropriado para o resumo dos dados
 st.subheader('📊 Resumo dos dados')
 
 colunas = ["Unidade","Curso","Modalidade","Vagas",
@@ -100,6 +99,90 @@ colunas = ["Unidade","Curso","Modalidade","Vagas",
            "LI_PPI","LI_Q","LI_PCD","LI_EP", "Data"]
 
 st.dataframe(df_filter[colunas].sort_values(by="Todas Op.", ascending=False).reset_index(drop=True), use_container_width=True)
+
+
+st.markdown("""___""")
+
+
+
+
+# Gere grafico de barras para cada unidade
+st.subheader('📊 Comparativo de inscrições por unidade')
+
+# Criar gráfico de barras comparando todas as unidades
+col1_chart = st.container()
+
+with col1_chart:
+    df_all_filtered = df_all[df_all['Data'] == ultima_data]
+    # remover as linhas com Curso = 'Todos'
+    df_all_filtered = df_all_filtered[df_all_filtered['Curso'] != 'Todos']
+    
+    
+    # Agrupar dados por unidade e modalidade, somando as inscrições da primeira opção
+    df_unidades_modalidades = df_all_filtered.groupby(['Unidade', 'Modalidade'])['1ª Op.'].sum().reset_index()
+    # ordenar por 1ª Op.
+    df_unidades_modalidades = df_unidades_modalidades.sort_values(by='1ª Op.', ascending=False)
+
+    
+    # Criar gráfico de barras com Plotly
+    fig_barras = px.bar(
+        df_unidades_modalidades, 
+        x='Unidade', 
+        y='1ª Op.', 
+        color='Modalidade',
+        title='Total de Inscrições (1ª Opção) por Unidade e Modalidade',
+        barmode='group'
+    )
+    
+    # Atualizar layout
+    fig_barras.update_layout(
+        xaxis_title="Unidade",
+        yaxis_title="Total de Inscrições (1ª Opção)",
+        height=500,
+        showlegend=True
+    )
+    
+    # Rotacionar labels do eixo X para melhor visualização
+    fig_barras.update_xaxes(tickangle=45)
+    
+    st.plotly_chart(fig_barras, use_container_width=True)
+
+
+
+
+# # Gráfico adicional: Evolução temporal por unidade
+# st.subheader('📈 Evolução das Inscrições por Unidade ao Longo do Tempo')
+
+# # Agrupar dados por data e unidade
+# df_evolucao_unidades = df_all.groupby(['Data', 'Unidade'])['1ª Op.'].sum().reset_index()
+# # remover as linhas com Curso = 'Todos'
+# df_evolucao_unidades = df_evolucao_unidades[df_evolucao_unidades['Unidade'] != 'Todos']
+
+
+# # Criar gráfico de linha para cada unidade
+# fig_evolucao = px.line(
+#     df_evolucao_unidades,
+#     x='Data',
+#     y='1ª Op.',
+#     color='Unidade',
+#     title='Evolução das Inscrições (1ª Opção) por Unidade',
+#     markers=True
+# )
+
+# fig_evolucao.update_layout(
+#     xaxis_title="Data",
+#     yaxis_title="Total de Inscrições (1ª Opção)",
+#     height=500,
+#     hovermode='x unified'
+# )
+
+# st.plotly_chart(fig_evolucao, use_container_width=True)
+
+
+
+
+
+
 
 
 

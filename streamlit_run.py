@@ -70,7 +70,7 @@ with container:
     fig = px.line(df_melt, x="Data", y="Inscrições", color="Categorias", markers=True)
 
     # Deixar visíveis apenas as séries desejadas
-    colunas_visiveis = ["1ª Op.","2ª Op.","3ª Op."]
+    colunas_visiveis = ["Insc.","1ª Op.","2ª Op.","3ª Op."]
     for trace in fig.data:
         if trace.name not in colunas_visiveis:
             trace.visible = "legendonly"

@@ -8,8 +8,12 @@ st.set_page_config(page_title="Vestibular IFMG 2026",  page_icon="📊", layout=
 
 df_all = load_data()  
  
+_, image_col, _ = st.columns([2,5,2])
 
-st.header(f'✔️ Vestibular IFMG 2026')
+with image_col:
+    st.image("ifmg-ps-2026.png")
+
+# st.header(f'✔️ Vestibular IFMG 2026')
 html_code = f"<div id=\"update\">Ultima atualização: {get_last_modified_file('dados/processed/all_data.csv')}</div>"
 st.markdown(html_code, unsafe_allow_html=True)
 # st.warning('Importante! Para esse levantamento estamos considerando apenas a primeira opção de curso do candidato.', icon="⚠️")

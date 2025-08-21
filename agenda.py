@@ -26,12 +26,11 @@ def executar():
     subprocess.run(["python", "gitrun.py", "-m", "Data update using git"])
     logger.info("Execução finalizada.")
 
-    print("Finalizando execução da agenda.py")
-
+    print("Aguardando próximo agendamento...")
 
 if __name__ == "__main__":
     logger.info("Iniciando agendamento...")
-    agendamentos = ["07:00", "12:00", "18:00" ,"22:00", "22:07"] 
+    agendamentos = ["07:00", "12:00", "18:00" ,"22:00"] 
     for i, a in enumerate(agendamentos):
         text = f"{i+1}° agendamento para {a}"
         print(text)

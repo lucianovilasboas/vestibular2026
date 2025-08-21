@@ -2,6 +2,7 @@ import os
 import time
 from datetime import datetime
 import shutil
+from log import logger
 
 download_dir = "/mnt/Data/Dev/python_projects/vestibular2026/dados/input"
 
@@ -13,7 +14,7 @@ data_atual = datetime.now().strftime("%Y%m%d_%H%M")
 
 for nome_original, tipo in nome_originais:
     novo_nome = f"dados_{tipo}_{data_atual}.csv"
-
+    logger.info(f"Renomeando {nome_original} para {novo_nome}")
     # Caminho completo
     arquivo_origem = os.path.join(download_dir, nome_original)
     arquivo_destino = os.path.join(download_dir, novo_nome)
@@ -25,8 +26,8 @@ for nome_original, tipo in nome_originais:
             # Dá uma folga para garantir que terminou de escrever
             time.sleep(2)
             shutil.move(arquivo_origem, arquivo_destino)
-            print(f"Arquivo renomeado para: {arquivo_destino}")
+            logger.info(f"Arquivo renomeado para: {arquivo_destino}")
             break
         time.sleep(1)
     else:
-        print("Arquivo export.csv não foi encontrado para renomear.")
+        logger.warning(f"Arquivo {nome_original} não foi encontrado para renomear.")

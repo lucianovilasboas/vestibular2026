@@ -53,22 +53,28 @@ if curso != "Todos":
 
 
 st.subheader('📈 Evolução das Inscrições')
-st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso}")
+st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Total de inscrições:** {df_filter['Insc.'].sum()}")
+st.warning(f"ATENÇÃO: A coluna Insc. é a soma das colunas 1ª Op., 2ª Op. e 3ª Op.")
 container = st.container()
 with container:
     # Colunas que queremos acompanhar
-    colunas = ["Insc.", "LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC"]
+    colunas = ["Insc.","1ª Op.","2ª Op.","3ª Op.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC"]
     # Agrupar por data e somar
     df_grouped = df_filter_mapa.groupby("Data")[colunas].sum().reset_index()
     # Calcular acumulado
     df_cumsum = df_grouped.copy()
     # df_cumsum[colunas] = df_cumsum[colunas].cumsum()
     # Transformar em formato longo (para Plotly)
-    df_melt = df_cumsum.melt(id_vars="Data", value_vars=colunas,
-                            var_name="Cotas", value_name="Inscrições")
+    df_melt = df_cumsum.melt(id_vars="Data", value_vars=colunas, var_name="Categorias", value_name="Inscrições")
     # Criar gráfico com Plotly Express
-    fig = px.line(df_melt, x="Data", y="Inscrições", color="Cotas",
-                markers=True, )
+    fig = px.line(df_melt, x="Data", y="Inscrições", color="Categorias", markers=True)
+
+    # Deixar visíveis apenas as séries desejadas
+    colunas_visiveis = ["1ª Op.","2ª Op.","3ª Op."]
+    for trace in fig.data:
+        if trace.name not in colunas_visiveis:
+            trace.visible = "legendonly"
+
     # Mostrar no Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
@@ -79,3 +85,4 @@ st.subheader('📊 Resumo dos dados')
 
 colunas = ["Unidade","Curso","Modalidade","Vagas","Insc.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC","1ª Op.","2ª Op.","3ª Op.","Insc. / Vagas","Insc. Válidas.","Insc. Vál. / Vagas","Data"]
 st.dataframe(df_filter[colunas].sort_values(by='Insc.', ascending=False).reset_index(drop=True), use_container_width=True)
+

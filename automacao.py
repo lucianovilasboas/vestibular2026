@@ -61,7 +61,7 @@ try:
     select = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "body > header > nav > div > ul > li.dropdown.messages-menu > a")))
     if select.is_displayed():
         select.click()
-    print(f"Dropdown exibido {select}")
+    logger.info(f"Dropdown exibido...")
 
     # Acessa o painel de detalhamento
     painel = driver.find_element(By.CSS_SELECTOR, "body > div.wrapper.row-offcanvas.row-offcanvas-left > aside.right-side > section.content > h2 > a")
@@ -79,7 +79,7 @@ try:
     select = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "body > header > nav > div > ul > li.dropdown.messages-menu > a")))
     if select.is_displayed():
         select.click()
-    print(f"Dropdown exibido...")
+    logger.info(f"Dropdown exibido...")
 
     painel = driver.find_element(By.CSS_SELECTOR, "body > header > nav > div > ul > li.dropdown.messages-menu.open > ul > li:nth-child(2) > div > ul > li:nth-child(2) > a")
     if(painel.is_displayed()):
@@ -102,7 +102,7 @@ try:
     select = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "body > header > nav > div > ul > li.dropdown.messages-menu > a")))
     if select.is_displayed():
         select.click()
-    print(f"Dropdown exibido...")
+    logger.info(f"Dropdown exibido...")
 
     painel = driver.find_element(By.CSS_SELECTOR, "body > header > nav > div > ul > li.dropdown.messages-menu.open > ul > li:nth-child(2) > div > ul > li:nth-child(3) > a")
     if(painel.is_displayed()):

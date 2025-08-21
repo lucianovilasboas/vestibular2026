@@ -2,7 +2,6 @@ import pandas as pd
 import os
 from datetime import datetime
 import shutil 
-from funcoes import process_file_for_subsequente, process_file_for_integrado, process_file_for_superior
 from log import logger
 
 if __name__ == "__main__":

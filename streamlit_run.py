@@ -53,12 +53,12 @@ if curso != "Todos":
 
 
 st.subheader('📈 Evolução das Inscrições')
-st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Total de inscrições:** {df_filter['Insc.'].sum()}")
-st.warning(f"ATENÇÃO: A coluna Insc. é a soma das colunas 1ª Op., 2ª Op. e 3ª Op.")
+st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Total de inscrições:** {df_filter['1ª Op.'].sum()}")
+# st.warning(f"ATENÇÃO: A coluna Insc. é a soma das colunas 1ª Op., 2ª Op. e 3ª Op.")
 container = st.container()
 with container:
     # Colunas que queremos acompanhar
-    colunas = ["Insc.","1ª Op.","2ª Op.","3ª Op.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC"]
+    colunas = ["1ª Op.","2ª Op.","3ª Op.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC"]
     # Agrupar por data e somar
     df_grouped = df_filter_mapa.groupby("Data")[colunas].sum().reset_index()
     # Calcular acumulado
@@ -69,8 +69,14 @@ with container:
     # Criar gráfico com Plotly Express
     fig = px.line(df_melt, x="Data", y="Inscrições", color="Categorias", markers=True)
 
+    # Atualizar layout para mostrar todos os valores no hover
+    fig.update_traces(mode="lines+markers", hovertemplate="%{y}")
+    fig.update_layout(
+        hovermode="x unified"  # mostra todas as séries no mesmo tooltip
+    )
+
     # Deixar visíveis apenas as séries desejadas
-    colunas_visiveis = ["Insc.","1ª Op.","2ª Op.","3ª Op."]
+    colunas_visiveis = ["1ª Op.","2ª Op.","3ª Op."]
     for trace in fig.data:
         if trace.name not in colunas_visiveis:
             trace.visible = "legendonly"

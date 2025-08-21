@@ -53,7 +53,7 @@ if curso != "Todos":
 
 
 st.subheader('📈 Evolução das Inscrições')
-st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Total de inscrições:** {df_filter['1ª Op.'].sum()}")
+st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Total de inscrições (1ª Op.):** {df_filter['1ª Op.'].sum()}")
 # st.warning(f"ATENÇÃO: A coluna Insc. é a soma das colunas 1ª Op., 2ª Op. e 3ª Op.")
 container = st.container()
 with container:
@@ -89,8 +89,13 @@ with container:
 
 st.subheader('📊 Resumo dos dados')
 
-colunas = ["Unidade","Curso","Modalidade","Vagas","Insc.","1ª Op.","2ª Op.","3ª Op.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC","Insc. / Vagas","Insc. Válidas.","Insc. Vál. / Vagas","Data"]
-st.dataframe(df_filter[colunas].sort_values(by='Insc.', ascending=False).reset_index(drop=True), use_container_width=True)
+colunas = ["Unidade","Curso","Modalidade","Vagas",
+           "1ª Op.","2ª Op.","3ª Op.","Todas Op.",
+           "1ª Op. / Vagas","1ª Op. Homolog.","1ª Op. Homolog. / Vagas",
+           "AC", "LB_PPI","LB_Q","LB_PCD", "LB_EP",
+           "LI_PPI","LI_Q","LI_PCD","LI_EP", "Data"]
+
+st.dataframe(df_filter[colunas].sort_values(by="Todas Op.", ascending=False).reset_index(drop=True), use_container_width=True)
 
 
 

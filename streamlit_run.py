@@ -19,7 +19,6 @@ st.markdown(html_code, unsafe_allow_html=True)
 # st.warning('Importante! Para esse levantamento estamos considerando apenas a primeira opção de curso do candidato.', icon="⚠️")
 
 
-
 col1 = st.sidebar.container()
 col2 = st.sidebar.container()
 col3 = st.sidebar.container()
@@ -63,7 +62,7 @@ st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {c
 container = st.container()
 with container:
     # Colunas que queremos acompanhar
-    colunas = ["1ª Op.","2ª Op.","3ª Op.","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP","AC"]
+    colunas = ["1ª Op.","2ª Op.","3ª Op.","AC","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP"]
     # Agrupar por data e somar
     df_grouped = df_filter_mapa.groupby("Data")[colunas].sum().reset_index()
     # Calcular acumulado
@@ -72,7 +71,14 @@ with container:
     # Transformar em formato longo (para Plotly)
     df_melt = df_cumsum.melt(id_vars="Data", value_vars=colunas, var_name="Categorias", value_name="Inscrições")
     # Criar gráfico com Plotly Express
-    fig = px.line(df_melt, x="Data", y="Inscrições", color="Categorias", markers=True)
+    fig = px.line(df_melt, 
+        x="Data", 
+        y="Inscrições", 
+        color="Categorias", 
+        markers=True,
+        category_orders={'Categorias': colunas},  # Define a ordem da legend   a
+        title="Evolução das Inscrições ao Longo do Tempo",
+        height=600)
 
     # Atualizar layout para mostrar todos os valores no hover
     fig.update_traces(mode="lines+markers", hovertemplate="%{y}")
@@ -81,7 +87,7 @@ with container:
     )
 
     # Deixar visíveis apenas as séries desejadas
-    colunas_visiveis = ["1ª Op.","2ª Op.","3ª Op."]
+    colunas_visiveis = ["1ª Op.","2ª Op.","3ª Op.","AC"]
     for trace in fig.data:
         if trace.name not in colunas_visiveis:
             trace.visible = "legendonly"
@@ -102,8 +108,6 @@ st.dataframe(df_filter[colunas].sort_values(by="Todas Op.", ascending=False).res
 
 
 st.markdown("""___""")
-
-
 
 
 # Gere grafico de barras para cada unidade
@@ -138,7 +142,7 @@ with col1_chart:
     fig_barras.update_layout(
         xaxis_title="Unidade",
         yaxis_title="Total de Inscrições (1ª Opção)",
-        height=500,
+        height=600,
         showlegend=True
     )
     
@@ -150,33 +154,39 @@ with col1_chart:
 
 
 
-# # Gráfico adicional: Evolução temporal por unidade
-# st.subheader('📈 Evolução das Inscrições por Unidade ao Longo do Tempo')
+# Gráfico adicional: Evolução temporal por unidade
+st.subheader('📈 Evolução das Inscrições por Unidade')
 
-# # Agrupar dados por data e unidade
-# df_evolucao_unidades = df_all.groupby(['Data', 'Unidade'])['1ª Op.'].sum().reset_index()
-# # remover as linhas com Curso = 'Todos'
-# df_evolucao_unidades = df_evolucao_unidades[df_evolucao_unidades['Unidade'] != 'Todos']
+col1_chart_line = st.container()
+
+with col1_chart_line:
+    # Agrupar dados por data e unidade
+    df_evolucao_unidades = df_all.groupby(['Data', 'Unidade'])['1ª Op.'].sum().reset_index()
+    # remover as linhas com Curso = 'Todos'
+    df_evolucao_unidades = df_evolucao_unidades[df_evolucao_unidades['Unidade'] != 'Todos']
+    
+    # Calcular o total de inscrições por unidade para ordenar a legenda
+    df_totais_unidades = df_evolucao_unidades.groupby('Unidade')['1ª Op.'].sum().sort_values(ascending=False)
+    ordem_legenda = df_totais_unidades.index.tolist()
+
+    # Criar gráfico de linha para cada unidade
+    fig_evolucao = px.line(
+        df_evolucao_unidades,
+        x='Data',
+        y='1ª Op.',
+        color='Unidade',
+        title='Evolução das Inscrições (1ª Opção) por Unidade',
+        markers=True,
+        category_orders={'Unidade': ordem_legenda}  # Define a ordem da legenda
+    )
+    fig_evolucao.update_traces(mode="lines+markers", hovertemplate="%{y}")
+    fig_evolucao.update_layout(
+        height=600,
+        hovermode="x unified"  # mostra todas as séries no mesmo tooltip
+    )
 
 
-# # Criar gráfico de linha para cada unidade
-# fig_evolucao = px.line(
-#     df_evolucao_unidades,
-#     x='Data',
-#     y='1ª Op.',
-#     color='Unidade',
-#     title='Evolução das Inscrições (1ª Opção) por Unidade',
-#     markers=True
-# )
-
-# fig_evolucao.update_layout(
-#     xaxis_title="Data",
-#     yaxis_title="Total de Inscrições (1ª Opção)",
-#     height=500,
-#     hovermode='x unified'
-# )
-
-# st.plotly_chart(fig_evolucao, use_container_width=True)
+    st.plotly_chart(fig_evolucao, use_container_width=True) 
 
 
 

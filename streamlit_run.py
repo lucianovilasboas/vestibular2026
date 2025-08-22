@@ -26,7 +26,7 @@ col3 = st.sidebar.container()
 
 with col1:
     unidades = df_all['Unidade'].unique()
-    unidade = st.selectbox('Selecione o campus:', unidades, key='unidade_select')
+    unidade = st.selectbox('Selecione o campus:', unidades, key='unidade_select', index=len(unidades)-1)
 
 df_unidade = df_all[df_all['Unidade'] == unidade]
 

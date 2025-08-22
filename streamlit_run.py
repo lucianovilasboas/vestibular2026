@@ -111,7 +111,7 @@ st.markdown("""___""")
 
 
 # Gere grafico de barras para cada unidade
-st.subheader('📊 Comparativo de inscrições por unidade')
+st.subheader('📊 Comparativo de Inscrições por Unidade')
 
 # Criar gráfico de barras comparando todas as unidades
 col1_chart = st.container()

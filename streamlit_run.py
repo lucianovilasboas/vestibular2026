@@ -19,17 +19,15 @@ st.markdown(html_code, unsafe_allow_html=True)
 # st.warning('Importante! Para esse levantamento estamos considerando apenas a primeira opção de curso do candidato.', icon="⚠️")
 
 
-col1 = st.sidebar.container()
-col2 = st.sidebar.container()
-col3 = st.sidebar.container()
+cols = st.columns([3,1,3])
 
-with col1:
+with cols[0]:
     unidades = df_all['Unidade'].unique()
     unidade = st.selectbox('Selecione o campus:', unidades, key='unidade_select', index=len(unidades)-1)
 
 df_unidade = df_all[df_all['Unidade'] == unidade]
 
-with col2:
+with cols[1]:
     modalidades = ["TODAS"] + list(df_unidade['Modalidade'].unique())
     modalidade = st.selectbox('Selecione a modalidade:', modalidades, key='modalidade_select')
 
@@ -44,7 +42,7 @@ else:
     df_filter_mapa = df_unidade[df_unidade['Modalidade'] == modalidade]
 
 
-with col3:
+with cols[2]:
     cursos = ["Todos"] + list(df_filter['Curso'].unique())
     curso = st.selectbox('Selecione o curso:', cursos, key='curso_select')
 

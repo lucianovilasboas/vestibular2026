@@ -55,7 +55,7 @@ if curso != "Todos":
 
 
 st.subheader('📈 Evolução das Inscrições')
-st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Vagas:** {df_filter['Vagas'].sum()} | **Total de inscrições (1ª Op.):** {df_filter['1ª Op.'].sum()}")
+st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Vagas:** {df_filter['Vagas'].sum()} | **Total de inscrições (1ª Op.):** {df_filter['1ª Op.'].sum()} | **Total de inscrições Homologadas:** {df_filter['1ª Op. Homolog.'].sum()}")
 # st.warning(f"ATENÇÃO: A coluna Insc. é a soma das colunas 1ª Op., 2ª Op. e 3ª Op.")
 container = st.container()
 with container:

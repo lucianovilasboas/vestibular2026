@@ -60,7 +60,7 @@ st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {c
 container = st.container()
 with container:
     # Colunas que queremos acompanhar
-    colunas = ["1ª Op.","2ª Op.","3ª Op.","AC","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP"]
+    colunas = ["1ª Op.","1ª Op. Homolog.","2ª Op.","3ª Op.","AC","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP"]
     # Agrupar por data e somar
     df_grouped = df_filter_mapa.groupby("Data")[colunas].sum().reset_index()
     # Calcular acumulado
@@ -85,7 +85,7 @@ with container:
     )
 
     # Deixar visíveis apenas as séries desejadas
-    colunas_visiveis = ["1ª Op.","2ª Op.","3ª Op.","AC"]
+    colunas_visiveis = ["1ª Op.","1ª Op. Homolog."]
     for trace in fig.data:
         if trace.name not in colunas_visiveis:
             trace.visible = "legendonly"

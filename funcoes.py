@@ -175,8 +175,10 @@ def amostrar_dois_por_dia(df):
 def load_data():
     df_all = pd.read_csv("dados/processed/all_data.csv")
     # return amostrar_dois_por_dia(df_all)
+    
     df_all['Data'] = pd.to_datetime(df_all['Timestamp'])
     # remover Timestamp
     df_all.drop(columns=['Timestamp'], inplace=True)
+
 
     return df_all

@@ -55,12 +55,12 @@ if curso != "Todos":
 
 
 st.subheader('📈 Evolução das Inscrições')
-st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Vagas:** {df_filter['Vagas'].sum()} | **Total de inscrições (1ª Op.):** {df_filter['1ª Op.'].sum()} | **Total de inscrições Homologadas:** {df_filter['1ª Op. Homolog.'].sum()}")
+st.write(f"**Unidade:** {unidade} | **Modalidade:** {modalidade} | **Curso:** {curso} | **Vagas:** {df_filter['Vagas'].sum()} | **Total de inscrições:** {df_filter['Inscritos'].sum()} | **Total de inscrições Homologadas:** {df_filter['Homolog.'].sum()}")
 # st.warning(f"ATENÇÃO: A coluna Insc. é a soma das colunas 1ª Op., 2ª Op. e 3ª Op.")
 container = st.container()
 with container:
     # Colunas que queremos acompanhar
-    colunas = ["1ª Op.","1ª Op. Homolog.","2ª Op.","3ª Op.","AC","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP"]
+    colunas = ["Inscritos", "Homolog.","AC","LB_PPI","LB_Q","LB_PCD","LB_EP","LI_PPI","LI_Q","LI_PCD","LI_EP"]
     # Agrupar por data e somar
     df_grouped = df_filter_mapa.groupby("Data")[colunas].sum().reset_index()
     # Calcular acumulado
@@ -85,7 +85,7 @@ with container:
     )
 
     # Deixar visíveis apenas as séries desejadas
-    colunas_visiveis = ["1ª Op.","1ª Op. Homolog."]
+    colunas_visiveis = ["Inscritos", "Homolog."]
     for trace in fig.data:
         if trace.name not in colunas_visiveis:
             trace.visible = "legendonly"
@@ -93,16 +93,16 @@ with container:
     # Mostrar no Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
+
 # insira um emiji apropriado para o resumo dos dados
 st.subheader('📊 Resumo dos dados')
 
 colunas = ["Unidade","Curso","Modalidade","Vagas",
-           "1ª Op.","2ª Op.","3ª Op.","Todas Op.",
-           "1ª Op. / Vagas","1ª Op. Homolog.","1ª Op. Homolog. / Vagas",
+           "Inscritos","Inscr./Vagas","Homolog.","Homolog./Vagas",
            "AC", "LB_PPI","LB_Q","LB_PCD", "LB_EP",
            "LI_PPI","LI_Q","LI_PCD","LI_EP", "Data"]
 
-st.dataframe(df_filter[colunas].sort_values(by="Todas Op.", ascending=False).reset_index(drop=True), use_container_width=True)
+st.dataframe(df_filter[colunas].sort_values(by="Inscritos", ascending=False).reset_index(drop=True), use_container_width=True)
 
 
 st.markdown("""___""")
@@ -119,27 +119,27 @@ with col1_chart:
     # remover as linhas com Curso = 'Todos'
     df_all_filtered = df_all_filtered[df_all_filtered['Curso'] != 'Todos']
     
-    
-    # Agrupar dados por unidade e modalidade, somando as inscrições da primeira opção
-    df_unidades_modalidades = df_all_filtered.groupby(['Unidade', 'Modalidade'])['1ª Op.'].sum().reset_index()
-    # ordenar por 1ª Op.
-    df_unidades_modalidades = df_unidades_modalidades.sort_values(by='1ª Op.', ascending=False)
+
+    # Agrupar dados por unidade e modalidade, somando as inscrições
+    df_unidades_modalidades = df_all_filtered.groupby(['Unidade', 'Modalidade'])['Inscritos'].sum().reset_index()
+    # ordenar por Inscritos
+    df_unidades_modalidades = df_unidades_modalidades.sort_values(by='Inscritos', ascending=False)
 
     
     # Criar gráfico de barras com Plotly
     fig_barras = px.bar(
         df_unidades_modalidades, 
         x='Unidade', 
-        y='1ª Op.', 
+        y='Inscritos', 
         color='Modalidade',
-        title='Total de Inscrições (1ª Opção) por Unidade e Modalidade',
+        title='Total de Inscrições por Unidade e Modalidade',
         barmode='group'
     )
     
     # Atualizar layout
     fig_barras.update_layout(
         xaxis_title="Unidade",
-        yaxis_title="Total de Inscrições (1ª Opção)",
+        yaxis_title="Total de Inscrições",
         height=600,
         showlegend=True
     )
@@ -159,21 +159,21 @@ col1_chart_line = st.container()
 
 with col1_chart_line:
     # Agrupar dados por data e unidade
-    df_evolucao_unidades = df_all.groupby(['Data', 'Unidade'])['1ª Op.'].sum().reset_index()
+    df_evolucao_unidades = df_all.groupby(['Data', 'Unidade'])['Inscritos'].sum().reset_index()
     # remover as linhas com Curso = 'Todos'
     df_evolucao_unidades = df_evolucao_unidades[df_evolucao_unidades['Unidade'] != 'Todos']
     
     # Calcular o total de inscrições por unidade para ordenar a legenda
-    df_totais_unidades = df_evolucao_unidades.groupby('Unidade')['1ª Op.'].sum().sort_values(ascending=False)
+    df_totais_unidades = df_evolucao_unidades.groupby('Unidade')['Inscritos'].sum().sort_values(ascending=False)
     ordem_legenda = df_totais_unidades.index.tolist()
 
     # Criar gráfico de linha para cada unidade
     fig_evolucao = px.line(
         df_evolucao_unidades,
         x='Data',
-        y='1ª Op.',
+        y='Inscritos',
         color='Unidade',
-        title='Evolução das Inscrições (1ª Opção) por Unidade',
+        title='Evolução das Inscrições por Unidade',
         markers=True,
         category_orders={'Unidade': ordem_legenda}  # Define a ordem da legenda
     )

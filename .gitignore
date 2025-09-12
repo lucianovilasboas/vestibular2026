@@ -9,7 +9,8 @@ __pycache__/
 *.pyzw
 
 # Ignore Jupyter Notebook files
-.ipynb_checkpoints/
+*.ipynb_checkpoints/
+*.ipynb
 
 # Ignore Python virtual environment files
 venv/
@@ -23,8 +24,6 @@ dados/processed/*
 input/
 backup/
 
-# Ignore testes.ipynb
-testes.ipynb
 
 
 # Ignore o arquivo cron.txt
@@ -35,4 +34,7 @@ dados/*.xls
 
 
 logs.log
+nohup.out
+run.lock
 
+script.sh

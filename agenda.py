@@ -23,7 +23,7 @@ def executar():
 
     print("  Executando gitrun.py...")
     logger.info("Executando gitrun.py...")
-    subprocess.run(["python", "gitrun.py", "-m", "Data update using git"])
+    subprocess.run(["python", "gitrun.py", "-m", "data update using git"])
     logger.info("Execução finalizada.")
 
     print("Aguardando próximo agendamento...")

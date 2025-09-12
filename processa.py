@@ -41,6 +41,9 @@ if __name__ == "__main__":
             # Lê o arquivo CSV
             df = pd.read_csv(file_path)
             
+            # Ajusta os totais
+            df = ajustar_totais(df)
+
             # Registra o timestamp da leitura
             df['Timestamp'] = timestamp
             df["Modalidade"] = file.split("_")[1]

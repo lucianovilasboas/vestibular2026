@@ -4,6 +4,35 @@ from datetime import datetime
 import shutil 
 from log import logger
 
+
+# Função para ajustar a linha de totais
+def ajustar_totais(df):
+
+    df = df.drop(df[df['Unidade'] == 'Totais'].index)
+    # Calculando a nova linha de totais (caso precise recalcular)
+    totais = {
+        "Unidade": "Todas",
+        "Curso": "Todos",
+        "Vagas": df["Vagas"].sum(),
+        "LB_PPI": df["LB_PPI"].sum(),
+        "LB_Q": df["LB_Q"].sum(),
+        "LB_PCD": df["LB_PCD"].sum(),
+        "LB_EP": df["LB_EP"].sum(),
+        "LI_PPI": df["LI_PPI"].sum(),
+        "LI_Q": df["LI_Q"].sum(),
+        "LI_PCD": df["LI_PCD"].sum(),
+        "LI_EP": df["LI_EP"].sum(),
+        "AC": df["AC"].sum(),
+        "Inscritos": df["Inscritos"].sum(),
+        "Inscr./Vagas": round(df["Inscritos"].sum() / df["Vagas"].sum(), 2),
+        "Homolog.": df["Homolog."].sum(),
+        "Homolog./Vagas": round(df["Homolog."].sum() / df["Vagas"].sum(), 2)
+    }
+    # Restaura a coluna totais no dataframe
+    df.iloc[-1] = totais
+
+    return df
+
 if __name__ == "__main__":
     
     # Define os caminhos das pastas

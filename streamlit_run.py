@@ -161,7 +161,7 @@ with col1_chart_line:
     # Agrupar dados por data e unidade
     df_evolucao_unidades = df_all.groupby(['Data', 'Unidade'])['Inscritos'].sum().reset_index()
     # remover as linhas com Curso = 'Todos'
-    df_evolucao_unidades = df_evolucao_unidades[df_evolucao_unidades['Unidade'] != 'Todos']
+    df_evolucao_unidades = df_evolucao_unidades[df_evolucao_unidades['Unidade'] != 'Todas']
     
     # Calcular o total de inscrições por unidade para ordenar a legenda
     df_totais_unidades = df_evolucao_unidades.groupby('Unidade')['Inscritos'].sum().sort_values(ascending=False)

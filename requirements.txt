@@ -1,13 +1,14 @@
-pandas
-streamlit
-plotly
-openpyxl
-watchdog
-schedule
-notebook
-selenium
-webdriver-manager
-altair<5
+pandas==2.2.2
+streamlit==1.30.0
+plotly==5.20.0
+openpyxl==3.1.2
+watchdog==4.0.0
+schedule==1.2.1
+notebook==7.1.2
+selenium==4.17.2
+webdriver-manager==4.0.1
+altair==4.2.2
+
 # mysqlclient
 # st-gsheets-connection
 # SQLAlchemy

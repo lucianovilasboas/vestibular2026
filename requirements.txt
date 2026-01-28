@@ -7,6 +7,7 @@ schedule
 notebook
 selenium
 webdriver-manager
+altair<5
 # mysqlclient
 # st-gsheets-connection
 # SQLAlchemy
